@@ -1,0 +1,435 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>attendance sheet</title>
+</head>
+<body>
+    <h1>attendance sheet</h1>
+    <form method="POST" class="">
+        {% csrf_token %}
+        <label for="">Date : </label>
+        <input type="date" name = date required>
+    
+    <table>
+        <tr>
+            <th>worker</th>
+            <th>present</th>
+            <th>absent</th>
+        </tr>
+
+
+    {% for worker in workers  %}
+        <tr>
+            <td > {{ worker.username }}</td>
+            <td>
+                <div class="attendance-option"> 
+                    <input type="radio" name = "attendance_{{ worker.id }}" value ="PRESENT" >
+                    <label for="present_{{worker.id }}" class = "present">
+                        &#9989;
+                    </label>
+                </div>
+            </td>
+            <td>
+                <div class="attendance-option"> 
+                    <input type="radio" name = "attendance_{{ worker.id }}" value = "ABSENT" > 
+                    <label for="absent_{{worker.id }}" class = "absent">
+                        &#10060;
+                    </label>
+                </div>
+            </td>
+
+        </tr>
+    {% endfor %}
+    </table>
+    <br>
+    <button type = "submit">SAVE ATTENDANCE </button>
+    </form>
+</body>
+</html> {% endcomment %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Sheet</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            padding: 30px 20px;
+            color: #1e293b;
+        }
+
+        .attendance-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .page-header {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: #1e3a5f;
+            font-size: 30px;
+            margin-bottom: 22px;
+            text-align: center;
+        }
+
+        .date-group {
+            max-width: 350px;
+            margin: 0 auto;
+        }
+
+        
+
+        /* Table card */
+        .table-card {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .table-heading {
+            font-size: 21px;
+            color: #1e3a5f;
+            margin-bottom: 20px;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            min-width: 420px;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #eff6ff;
+        }
+
+        th {
+            padding: 16px 14px;
+            color: #1e3a5f;
+            font-size: 14px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        th:first-child {
+            text-align: left;
+        }
+
+        td {
+            padding: 15px 14px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        td:first-child {
+            text-align: left;
+            font-size: 15px;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Attendance radio options */
+        .attendance-option {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .attendance-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #2563eb;
+        }
+
+        /* Save button */
+        .save-btn {
+            display: block;
+            width: 100%;
+            max-width: 350px;
+            margin: 25px auto 0;
+            padding: 14px 20px;
+            background: #2563eb;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .save-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .save-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Tablet */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .page-header {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 27px;
+            }
+
+            .table-card {
+                padding: 20px;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 480px) {
+            body {
+                padding: 15px 10px;
+            }
+
+            .page-header {
+                padding: 22px 18px;
+                border-radius: 12px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .date-group {
+                max-width: 100%;
+            }
+
+            .table-card {
+                padding: 18px 10px;
+                border-radius: 12px;
+            }
+
+            .table-heading {
+                font-size: 19px;
+                padding-left: 5px;
+            }
+
+            th {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 13px 10px;
+            }
+
+            td:first-child {
+                font-size: 14px;
+            }
+
+            .attendance-option input[type="radio"] {
+                width: 22px;
+                height: 22px;
+            }
+
+            .save-btn {
+                max-width: 100%;
+                padding: 14px;
+            }
+
+            .date-group {
+            max-width: 350px;
+            margin: 0 auto;
+}
+
+        .date-group label {
+            display: block;
+            font-size: 15px;
+            font-weight: 600;
+            color: #1e3a5f;
+            margin-bottom: 10px;
+        }
+
+        .date-group input[type="date"] {
+            width: 100%;
+            padding: 14px 16px;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            color: #1e3a5f;
+            background-color: #f8fbff;
+            border: 2px solid #bfdbfe;
+            border-radius: 12px;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.06);
+        }
+
+        .date-group input[type="date"]:hover {
+            border-color: #60a5fa;
+            background-color: #ffffff;
+        }
+
+        .date-group input[type="date"]:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+        }
+
+        /* Style the calendar icon in supported browsers */
+        .date-group input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 5px;
+            background-color: #dbeafe;
+        }
+
+        .date-group input[type="date"]::-webkit-calendar-picker-indicator:hover {
+            background-color: #bfdbfe;
+        }
+
+        /* Mobile screens */
+        @media (max-width: 480px) {
+            .date-group {
+                max-width: 100%;
+            }
+
+            .date-group input[type="date"] {
+                padding: 13px;
+                font-size: 16px;
+            }
+        }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="attendance-container">
+        
+
+        <div class="page-header">
+            <h1>Attendance Sheet</h1>
+
+            <div class="date-group">
+    <label for="attendance-date">Attendance Date</label>
+    <input
+        type="date"
+        id="attendance-date"
+        name="date"
+        form="attendance-form"
+        required
+    >
+</div>
+{% if messages %}
+            <div class="message-box">
+                {% for message in messages %}
+                    <p class="{{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+    {% endif %}
+
+        <div class="table-card">
+
+            <h2 class="table-heading">Mark Worker Attendance</h2>
+
+            <form method="POST" id="attendance-form">
+                {% csrf_token %}
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Worker</th>
+                                <th>PRESENT </th>
+                                <th>ABSENT </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for worker in workers %}
+                                <tr>
+                                    <td>{{ worker.username }}</td>
+
+                                    <td>
+                                        <div class="attendance-option">
+                                            <input
+                                                type="radio"
+                                                id="present_{{ worker.id }}"
+                                                name="attendance_{{ worker.id }}"
+                                                value="PRESENT"
+                                                aria-label="Mark {{ worker.username }} present"
+                                            >
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="attendance-option">
+                                            <input
+                                                type="radio"
+                                                id="absent_{{ worker.id }}"
+                                                name="attendance_{{ worker.id }}"
+                                                value="ABSENT"
+                                                aria-label="Mark {{ worker.username }} absent"
+                                            >
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="3" style="text-align: center;">
+                                        No workers found.
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <button type="submit" class="save-btn">
+                    Save Attendance
+                </button>
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

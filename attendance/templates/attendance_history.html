@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Attendance History</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            padding: 30px 20px;
+            color: #1e293b;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Page heading */
+        .page-header {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: #1e3a5f;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 12px 18px;
+            background: #e2e8f0;
+            color: #334155;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .back-btn:hover {
+            background: #cbd5e1;
+            transform: translateY(-2px);
+        }
+
+        /* Daily attendance card */
+        .attendance-card {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            color: #1e3a5f;
+            font-size: 22px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #eff6ff;
+        }
+
+        /* Responsive table */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 300px;
+        }
+
+        thead {
+            background: #eff6ff;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            color: #1e3a5f;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 14px 15px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 15px;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Attendance status */
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .present {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .absent {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Attendance totals */
+        .attendance-summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .summary-box {
+            flex: 1;
+            min-width: 150px;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+
+        .present-summary {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+        }
+
+        .absent-summary {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+        }
+
+        .summary-box strong {
+            display: block;
+            font-size: 22px;
+            margin-top: 8px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            background: #ffffff;
+            padding: 35px 20px;
+            border-radius: 16px;
+            text-align: center;
+            color: #64748b;
+            font-size: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Tablet */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .page-header {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .attendance-card {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 480px) {
+            body {
+                padding: 15px 10px;
+            }
+
+            .page-header {
+                padding: 20px;
+                border-radius: 12px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .attendance-card {
+                padding: 18px 12px;
+                border-radius: 12px;
+            }
+
+            h2 {
+                font-size: 18px;
+            }
+
+            th,
+            td {
+                padding: 12px 10px;
+                font-size: 13px;
+            }
+
+            .attendance-summary {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .summary-box {
+                min-width: 100%;
+            }
+
+            .back-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+         <div class="page-header">
+
+    <h1>Attendance History</h1>
+<a href="{% url 'authenti:superwiser-dashboard' %}" class="back-btn">back to dashboard</a>
+        </div>
+{% for day in daily_data %}
+
+        <div class="attendance-card">
+
+
+    <h2>Attendance: {{ day.date }}</h2>
+    <div class="table-wrapper">
+
+    <table border="1">
+
+        <tr>
+            <th>Worker</th>
+            <th>Status</th>
+        </tr>
+
+        {% for record in day.records %}
+
+            <tr>
+
+                <td>
+                    {{ record.worker.username }}
+                </td>
+
+                <td>
+                    {% if record.status == "PRESENT" %}
+                        PRESENT &#9989;
+                    {% else %}
+                        ABSENT &#10060;
+                    {% endif %}
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+    </table>
+    </div>
+
+    <div class="attendance-summary">
+
+            <div class="summary-box absent-summary">
+
+    <p>
+        <strong>Total Absent: {{ day.absent }}</strong>
+    </p>
+</div>
+
+<div class="summary-box present-summary">
+        <p>
+        <strong>Total present: {{ day.present }}</strong>
+    </p>
+    </div>
+
+     </div>
+
+            </div>
+
+    <hr>
+
+{% empty %}
+            <div class="empty-state">
+    <p>No attendance records found.</p>
+            </div>
+
+{% endfor %}
+
+</div>
+</body>
+
+</html>

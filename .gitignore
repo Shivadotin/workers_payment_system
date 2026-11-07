@@ -1,0 +1,30 @@
+# # secrets
+# .env
+
+# # local database
+# db.sqlite3
+
+# # virtual environment
+# env/
+
+# # python junk
+# __pycache__/
+# *.pyc
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+env/
+venv/
+
+# Environment variables
+.env
+
+# Database
+db.sqlite3
+
+# Django files
+staticfiles/
+media/

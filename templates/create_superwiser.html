@@ -1,0 +1,241 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>superwiser create form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+
+    </style>
+</head>
+<body>
+    <h1>Supervisor Form </h1>
+    <form method="POST" class="supervisor-form">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type = "submit">Create superwiser</button>
+        <button >back</button>
+        
+    </form>
+</body>
+</html> {% endcomment %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supervisor Create Form</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #1e3a5f;
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .supervisor-form {
+            width: 100%;
+            max-width: 500px;
+            background: #ffffff;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .supervisor-form p {
+            margin-bottom: 20px;
+        }
+
+        .supervisor-form label {
+            display: block;
+            font-size: 15px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        .supervisor-form input,
+        .supervisor-form select,
+        .supervisor-form textarea {
+            display: block;
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            font-family: inherit;
+            color: #1e293b;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .supervisor-form input:focus,
+        .supervisor-form select:focus,
+        .supervisor-form textarea:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+            background: #ffffff;
+        }
+
+        .supervisor-form textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .supervisor-form ul.errorlist {
+            color: #dc2626;
+            font-size: 13px;
+            margin: 6px 0;
+            padding-left: 20px;
+        }
+
+        .supervisor-form .helptext {
+            display: block;
+            color: #64748b;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .button-group button,
+        .button-group a {
+            flex: 1;
+            padding: 13px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .submit-btn {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        .submit-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .back-btn {
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        .back-btn:hover {
+            background: #cbd5e1;
+            transform: translateY(-2px);
+        }
+
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 28px;
+            }
+
+            .supervisor-form {
+                max-width: 450px;
+                padding: 28px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .supervisor-form {
+                padding: 22px 18px;
+                border-radius: 12px;
+            }
+
+            .supervisor-form input,
+            .supervisor-form select,
+            .supervisor-form textarea {
+                font-size: 16px;
+                padding: 11px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .button-group button,
+            .button-group a {
+                width: 100%;
+                padding: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Supervisor Form</h1>
+
+    <form method="POST" class="supervisor-form">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <div class="button-group">
+
+            <a href="{% url 'authenti:admin-dashboard' %}" class="back-btn">
+                Back
+            </a>
+            <button type="submit" class="submit-btn">
+                Create Supervisor
+            </button>
+
+
+            
+        </div>
+    </form>
+</body>
+</html>

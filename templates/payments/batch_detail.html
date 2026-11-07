@@ -1,0 +1,402 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payout Details | Daily Wage Payment System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            color: #1e293b;
+        }
+
+        .navbar {
+            background: #142b4a;
+            color: white;
+            padding: 18px 5%;
+        }
+
+        .navbar h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .container {
+            max-width: 1250px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: 27px;
+        }
+
+        .subtitle {
+            margin: 0;
+            color: #64748b;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e1e8f0;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .summary .card {
+            margin: 0;
+        }
+
+        .label {
+            color: #64748b;
+            font-size: 14px;
+            margin: 0 0 12px;
+        }
+
+        .value {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 11px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        .pending {
+            background: #fff0c2;
+            color: #8a5700;
+        }
+
+        .success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .failed {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .partial {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .table-card {
+            background: white;
+            border: 1px solid #e1e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .table-heading {
+            padding: 20px 22px;
+            border-bottom: 1px solid #e1e8f0;
+        }
+
+        .table-heading h2 {
+            margin: 0 0 6px;
+            font-size: 19px;
+        }
+
+        .table-heading p {
+            margin: 0;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 900px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px 16px;
+            text-align: left;
+            border-bottom: 1px solid #edf1f6;
+            font-size: 14px;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #475569;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        tbody tr:hover {
+            background: #f8fbff;
+        }
+
+        .amount {
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .message {
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background: #e0f2fe;
+            color: #075985;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 22px;
+        }
+
+        .btn {
+            display: inline-block;
+            border: none;
+            border-radius: 7px;
+            padding: 11px 16px;
+            font-size: 13px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #e8eef6;
+            color: #1e293b;
+        }
+
+        .btn-danger {
+            background: #b91c1c;
+            color: white;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #64748b;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 0 12px;
+                margin-top: 20px;
+            }
+
+            .summary {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <h2>Daily Wage Payment System</h2>
+</nav>
+
+<main class="container">
+
+    <div class="page-header">
+        <div>
+            <h1>Payout Details</h1>
+            <p class="subtitle">
+                Team managed by
+                <strong>{{ batch.superwiser.username }}</strong>
+            </p>
+        </div>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <section class="summary">
+
+        <div class="card">
+            <p class="label">Payment Period</p>
+            <p class="value" style="font-size: 17px;">
+                {{ batch.period_start|date:"d M Y" }}
+                – {{ batch.period_end|date:"d M Y" }}
+            </p>
+        </div>
+
+        <div class="card">
+            <p class="label">Total Batch Amount</p>
+            <p class="value">
+                ₹{{ batch.total_amount|floatformat:2 }}
+            </p>
+        </div>
+
+        <div class="card">
+            <p class="label">Batch Status</p>
+            <p class="value">
+                {% if batch.status == "SUCCESS" or batch.status == "PAID" %}
+                    <span class="badge success">{{ batch.status }}</span>
+                {% elif batch.status == "FAILED" %}
+                    <span class="badge failed">{{ batch.status }}</span>
+                {% elif batch.status == "PARTIAL" %}
+                    <span class="badge partial">{{ batch.status }}</span>
+                {% else %}
+                    <span class="badge pending">{{ batch.status }}</span>
+                {% endif %}
+            </p>
+        </div>
+
+    </section>
+
+    <section class="table-card">
+
+        <div class="table-heading">
+            <h2>Individual Worker Payments</h2>
+            <p>Review attendance, wages, and payment results for this batch.</p>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Worker</th>
+                        <th>Present Days</th>
+                        <th>Amount</th>
+                        <th>Bank Details</th>
+                        <th>Payment Status</th>
+                        <th>Transfer ID / Failure Reason</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for r in records %}
+                        <tr>
+                            <td><strong>{{ r.worker.username }}</strong></td>
+
+                            <td>{{ r.days_present }}</td>
+
+                            <td class="amount">
+                                ₹{{ r.amount|floatformat:2 }}
+                            </td>
+
+                            <td>
+                                {% if r.worker.bank_details %}
+                                    <span class="badge success">Available</span>
+                                {% else %}
+                                    <span class="badge failed">Missing</span>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if r.status == "SUCCESS" %}
+                                    <span class="badge success">{{ r.status }}</span>
+                                {% elif r.status == "FAILED" %}
+                                    <span class="badge failed">{{ r.status }}</span>
+                                {% elif r.status == "PENDING" %}
+                                    <span class="badge pending">{{ r.status }}</span>
+                                {% else %}
+                                    <span class="badge">{{ r.status }}</span>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if r.status == "SUCCESS" %}
+                                    {{ r.transfer_id|default:"Not available" }}
+                                {% else %}
+                                    {{ r.failure_reason|default:"—" }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="6" class="empty">
+                                No worker payment records found for this batch.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+
+    <div class="actions">
+
+        {% if batch.status == "PENDING" %}
+            <a class="btn btn-primary"
+               href="{% url 'payments:fund-batch' batch.id %}">
+                Continue to Razorpay
+            </a>
+        {% endif %}
+
+        {% if batch.status == "PARTIAL" or batch.status == "FAILED" %}
+            <form method="post">
+                {% csrf_token %}
+                <button class="btn btn-danger" type="submit">
+                    Retry Failed Payments
+                </button>
+            </form>
+        {% endif %}
+
+        <a class="btn btn-secondary"
+           href="{% url 'payments:select-superwiser' %}">
+            ← Back to Weekly Payments
+        </a>
+
+    </div>
+
+</main>
+
+</body>
+</html>

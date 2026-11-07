@@ -1,0 +1,10 @@
+<h1>{% if has_details %}Update{% else %}Add{% endif %} bank details</h1>
+
+{% for m in messages %}<p>{{ m }}</p>{% endfor %}
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Save</button>
+</form>
+<a href="{% url 'authenti:worker-dashboard' %}">Back</a>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset  password</title>
+</head>
+<body>
+    <h1>reset password</h1>
+        {% if messages %}
+            <div class="message-box">
+                {% for message in messages %}
+                    <p class="{{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+
+    <form method="POST" class="">
+         {% csrf_token %}
+        <label for="">New password</label>
+        <input type="password" required placeholder = "enter password" name = "password">
+    </br>
+
+        <label for="">confirm password</label>
+        <input type="password" required placeholder = "re-enter password" name = "confirm_password">
+    </br>
+
+    <button type = "submit">Submit</button>
+    </form>
+
+</body>
+</html>

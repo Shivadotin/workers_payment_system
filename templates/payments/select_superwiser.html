@@ -1,0 +1,439 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Payments | Daily Wage System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            color: #1e293b;
+        }
+
+        .navbar {
+            background: #142b4a;
+            color: white;
+            padding: 18px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .navbar h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .navbar span {
+            font-size: 13px;
+            color: #d7e3f4;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .page-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            margin: 0 0 8px;
+            font-size: 28px;
+        }
+
+        .page-heading p {
+            margin: 0;
+            color: #64748b;
+        }
+
+        .week-label {
+            background: white;
+            border: 1px solid #dbe3ef;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 14px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            border: 1px solid #e1e8f0;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+        }
+
+        .card p {
+            margin: 0 0 12px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .card h2 {
+            margin: 0;
+            font-size: 27px;
+            overflow-wrap: anywhere;
+        }
+
+        .table-card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e1e8f0;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+        }
+
+        .table-heading {
+            padding: 20px 22px;
+            border-bottom: 1px solid #e1e8f0;
+        }
+
+        .table-heading h2 {
+            margin: 0 0 6px;
+            font-size: 19px;
+        }
+
+        .table-heading p {
+            margin: 0;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th, td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid #edf1f6;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #475569;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        tbody tr:hover {
+            background: #f8fbff;
+        }
+
+        .username {
+            font-weight: bold;
+        }
+
+        .amount {
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        .pending {
+            background: #fff0c2;
+            color: #8a5700;
+        }
+
+        .success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .failed {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .partial {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            border: none;
+            border-radius: 7px;
+            padding: 10px 13px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #e8eef6;
+            color: #1e293b;
+        }
+
+        .btn-secondary:hover {
+            background: #d8e2ef;
+        }
+
+        .messages {
+            margin-bottom: 20px;
+        }
+
+        .message {
+            background: #e0f2fe;
+            color: #075985;
+            border: 1px solid #bae6fd;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 35px 15px;
+            color: #64748b;
+        }
+
+        .footer-actions {
+            margin-top: 22px;
+        }
+
+        @media (max-width: 700px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .page-heading h1 {
+                font-size: 23px;
+            }
+
+            .container {
+                margin-top: 22px;
+                padding: 0 12px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            th, td {
+                padding: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <h2>Daily Wage Payment System</h2>
+        <span>Administrator Panel</span>
+    </nav>
+
+    <main class="container">
+
+        <div class="page-heading">
+            <div>
+                <h1>Weekly Payments</h1>
+                <p>Review worker wages and manage weekly payout batches.</p>
+            </div>
+
+            <div class="week-label">
+                <strong>Payment Period:</strong><br>
+                {{ start|date:"d M Y" }} – {{ end|date:"d M Y" }}
+            </div>
+        </div>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <section class="cards">
+
+            <div class="card">
+                <p>Total Superwisers</p>
+                <h2>{{ data|length }}</h2>
+            </div>
+
+            <div class="card">
+                <p>Total Workers</p>
+                <h2>
+                    {% with worker_total=0 %}
+                        {% for row in data %}
+                            {{ row.worker_count|add:worker_total }}
+                        {% endfor %}
+                    {% endwith %}
+                </h2>
+                <h2>{{ total_workers }}</h2>
+                <small>See the table below for each team's worker count.</small>
+            </div>
+
+            <div class="card">
+                <p>Total Weekly Wages</p>
+                <h2>
+                    ₹{% with total_wages=0 %}
+                        {% for row in data %}
+                            {{ row.pending_total|add:total_wages }}
+                        {% endfor %}
+                    {% endwith %}
+                </h2>
+                <h2>₹{{ total_weekly_wages|floatformat:2 }}</h2>
+                <small>Based on the wage totals returned by the payment view.</small>
+            </div>
+
+        </section>
+
+        <section class="table-card">
+
+            <div class="table-heading">
+                <h2>Superwiser Payment Overview</h2>
+                <p>View the weekly wage summary for each Superwiser's team.</p>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Superwiser</th>
+                            <th>Workers</th>
+                            <th>Weekly Wage Total</th>
+                            <th>Payment Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for row in data %}
+                            <tr>
+                                <td class="username">
+                                    {{ row.superwiser.username }}
+                                </td>
+
+                                <td>{{ row.worker_count }}</td>
+
+                                <td class="amount">
+                                    ₹{{ row.pending_total|floatformat:2 }}
+                                </td>
+
+                                <td>
+                                    {% if row.batch %}
+                                        {% if row.batch.status == "SUCCESS" or row.batch.status == "PAID" %}
+                                            <span class="badge success">
+                                                {{ row.batch.status }}
+                                            </span>
+                                        {% elif row.batch.status == "FAILED" %}
+                                            <span class="badge failed">
+                                                {{ row.batch.status }}
+                                            </span>
+                                        {% elif row.batch.status == "PARTIAL" %}
+                                            <span class="badge partial">
+                                                {{ row.batch.status }}
+                                            </span>
+                                        {% else %}
+                                            <span class="badge pending">
+                                                {{ row.batch.status }}
+                                            </span>
+                                        {% endif %}
+                                    {% elif row.pending_total %}
+                                        <span class="badge pending">NOT STARTED</span>
+                                    {% else %}
+                                        <span class="badge">NO WAGES</span>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    {% if row.batch %}
+                                        <a class="btn btn-secondary"
+                                           href="{% url 'payments:batch-detail' row.batch.id %}">
+                                            View Payout
+                                        </a>
+                                    {% elif row.pending_total %}
+                                        <a class="btn btn-primary"
+                                           href="{% url 'payments:confirm-payout' row.superwiser.id %}">
+                                            Pay Team
+                                        </a>
+                                    {% else %}
+                                        <span>Nothing to pay</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5" class="empty">
+                                    No Superwiser accounts found.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+        <a class="btn btn-primary" href="{% url 'payments:reports' %}">
+    View Payment Reports
+        </a>
+
+        <div class="footer-actions">
+            <a class="btn btn-secondary"
+               href="{% url 'authenti:admin-dashboard' %}">
+                ← Back to Admin Dashboard
+            </a>
+        </div>
+
+    </main>
+
+</body>
+</html>

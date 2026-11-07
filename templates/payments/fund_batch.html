@@ -1,0 +1,372 @@
+ <h1>Fund payroll for {{ batch.superwiser.username }}'s team</h1>
+<p>Week: {{ batch.period_start }} to {{ batch.period_end }}</p>
+<h3>Total: ₹{{ batch.total_amount }}</h3>
+<p>Test mode: no real money is charged.</p>
+
+<button id="pay-btn">Pay with Razorpay</button>
+
+<form id="verify-form" method="post" action="{% url 'payments:verify-payment' batch.id %}">
+  {% csrf_token %}
+  <input type="hidden" name="razorpay_order_id" id="f-order">
+  <input type="hidden" name="razorpay_payment_id" id="f-payment">
+  <input type="hidden" name="razorpay_signature" id="f-signature">
+</form>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  document.getElementById("pay-btn").onclick = function () {
+    var rzp = new Razorpay({
+      key: "{{ key_id }}",
+      amount: "{{ amount_paise }}",
+      currency: "INR",
+      name: "Payroll",
+      description: "Weekly payroll for {{ batch.superwiser.username }}'s team",
+      order_id: "{{ batch.razorpay_order_id }}",
+      handler: function (response) {
+        document.getElementById("f-order").value = response.razorpay_order_id;
+        document.getElementById("f-payment").value = response.razorpay_payment_id;
+        document.getElementById("f-signature").value = response.razorpay_signature;
+        document.getElementById("verify-form").submit();
+      }
+    });
+    rzp.open();
+  };
+</script>
+<a href="{% url 'payments:select-superwiser' %}">Cancel</a>
+
+
+{% comment %} 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fund Payroll</title>
+
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Page background */
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #e1ebfc, #cbdcf5);
+            color: #173b68;
+            min-height: 100vh;
+            padding: 50px 6%;
+        }
+
+        /* Main payment card */
+        .payment-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 12px 35px rgba(35, 65, 110, 0.10);
+        }
+
+        /* Heading */
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #173b68;
+            margin-bottom: 25px;
+            line-height: 1.4;
+            overflow-wrap: anywhere;
+        }
+
+        /* Payroll details */
+        .details {
+            margin-bottom: 28px;
+        }
+
+        .details p {
+            font-size: 17px;
+            color: #243b59;
+            margin-bottom: 18px;
+            line-height: 1.6;
+        }
+
+        /* Total amount */
+        .total-box {
+            background: #f0f5ff;
+            border-left: 5px solid #2864f0;
+            padding: 22px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        .total-box h2 {
+            font-size: 25px;
+            color: #173b68;
+            font-weight: 700;
+            overflow-wrap: anywhere;
+        }
+
+        /* Test mode notice */
+        .test-mode {
+            display: inline-block;
+            background: #fff2c7;
+            color: #875400;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        /* Button area */
+        .button-group {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 10px;
+        }
+
+        /* Common button styling */
+        .btn {
+            display: inline-block;
+            padding: 15px 26px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s ease,
+                        transform 0.2s ease;
+        }
+
+        /* Pay button */
+        .pay-btn {
+            background: #2864f0;
+            color: #ffffff;
+        }
+
+        .pay-btn:hover {
+            background: #174bc4;
+            transform: translateY(-2px);
+        }
+
+        .pay-btn:disabled {
+            background: #91a9df;
+            cursor: wait;
+            transform: none;
+        }
+
+        /* Cancel button */
+        .cancel-btn {
+            background: #ffe1e1;
+            color: #c62828;
+        }
+
+        .cancel-btn:hover {
+            background: #ffcaca;
+            transform: translateY(-2px);
+        }
+
+        /* Small footer */
+        .footer-text {
+            margin-top: 30px;
+            color: #6b7c93;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 12px;
+            }
+
+            .payment-container {
+                padding: 25px 18px;
+                border-radius: 14px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            .total-box h2 {
+                font-size: 22px;
+            }
+
+            .button-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="payment-container">
+
+        <!-- Page heading -->
+        <h1>
+            Fund payroll for {{ batch.superwiser.username }}'s team
+        </h1>
+
+        <!-- Payroll information -->
+        <div class="details">
+            <p>
+                <strong>Payroll period:</strong>
+                {{ batch.period_start }} to {{ batch.period_end }}
+            </p>
+        </div>
+
+        <!-- Total amount -->
+        <div class="total-box">
+            <h2>
+                Total: ₹{{ batch.total_amount }}
+            </h2>
+        </div>
+
+        <!-- Test mode notice -->
+        <p class="test-mode">
+            Test mode: no real money is charged.
+        </p>
+
+        <!-- Payment and cancel buttons -->
+        <div class="button-group">
+
+            <button type="button" id="pay-btn" class="btn pay-btn">
+                Pay with Razorpay
+            </button>
+
+            <a href="{% url 'payments:select-superwiser' %}"
+               class="btn cancel-btn">
+                Cancel
+            </a>
+
+        </div>
+
+        <p class="footer-text">
+            Please verify the payroll amount and period before proceeding
+            with payment.
+        </p>
+
+    </div>
+
+    <!-- Hidden form for server-side payment verification -->
+    <form id="verify-form"
+          method="post"
+          action="{% url 'payments:verify-payment' batch.id %}">
+
+        {% csrf_token %}
+
+        <input type="hidden"
+               name="razorpay_order_id"
+               id="f-order">
+
+        <input type="hidden"
+               name="razorpay_payment_id"
+               id="f-payment">
+
+        <input type="hidden"
+               name="razorpay_signature"
+               id="f-signature">
+
+    </form>
+
+    <!-- Razorpay Checkout -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <script>
+        const payButton = document.getElementById("pay-btn");
+
+        payButton.addEventListener("click", function () {
+
+            // Check whether Razorpay Checkout has loaded
+            if (typeof Razorpay === "undefined") {
+                alert("Razorpay could not be loaded. Please try again.");
+                return;
+            }
+
+            // Prevent repeated clicks while opening checkout
+            payButton.disabled = true;
+            payButton.textContent = "Opening payment...";
+
+            try {
+                const options = {
+                    key: "{{ key_id|escapejs }}",
+
+                    amount: "{{ amount_paise }}",
+
+                    currency: "INR",
+
+                    name: "Payroll",
+
+                    description:
+                        "Weekly payroll for {{ batch.superwiser.username|escapejs }}'s team",
+
+                    order_id: "{{ batch.razorpay_order_id|escapejs }}",
+
+                    handler: function (response) {
+
+                        // Populate payment verification fields
+                        document.getElementById("f-order").value =
+                            response.razorpay_order_id;
+
+                        document.getElementById("f-payment").value =
+                            response.razorpay_payment_id;
+
+                        document.getElementById("f-signature").value =
+                            response.razorpay_signature;
+
+                        // Submit to Django for server-side verification
+                        document.getElementById("verify-form").submit();
+                    },
+
+                    modal: {
+                        ondismiss: function () {
+                            payButton.disabled = false;
+                            payButton.textContent = "Pay with Razorpay";
+                        }
+                    },
+
+                    theme: {
+                        color: "#2864f0"
+                    }
+                };
+
+                const razorpay = new Razorpay(options);
+
+                razorpay.on("payment.failed", function (response) {
+                    alert(
+                        "Payment failed: " +
+                        (response.error.description || "Please try again.")
+                    );
+
+                    payButton.disabled = false;
+                    payButton.textContent = "Pay with Razorpay";
+                });
+
+                razorpay.open();
+
+            } catch (error) {
+                console.error("Razorpay error:", error);
+
+                alert("Unable to start payment. Please try again.");
+
+                payButton.disabled = false;
+                payButton.textContent = "Pay with Razorpay";
+            }
+        });
+    </script>
+
+</body>
+</html> {% endcomment %}

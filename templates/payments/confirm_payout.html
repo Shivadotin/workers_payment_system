@@ -1,0 +1,20 @@
+<h1>Confirm payout for {{ superwiser.username }}'s team</h1>
+<p>Week: {{ start }} to {{ end }}</p>
+
+<table border="1" cellpadding="6">
+  <tr><th>Worker</th><th>Days present</th><th>Amount</th></tr>
+  {% for item in breakdown %}
+  <tr>
+    <td>{{ item.worker.username }}</td>
+    <td>{{ item.days }}</td>
+    <td>₹{{ item.amount }}</td>
+  </tr>
+  {% endfor %}
+</table>
+<h3>Total: ₹{{ total }}</h3>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Pay all workers now</button>
+</form>
+<a href="{% url 'payments:select-superwiser' %}">Cancel</a>

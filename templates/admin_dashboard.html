@@ -1,0 +1,187 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>admin dashboard</title>
+</head>
+<body>
+    <h1>Admin dashboard</h1>
+    <a href="{% url 'authenti:create-superwiser' %}" class="">CREATE SUPERWISER</a>
+    <a href="{% url 'authenti:create-worker' %}" class="">CREATE WORKER</a>
+
+    
+    
+</body>
+</html> {% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Dashboard Container */
+        .dashboard {
+            width: 100%;
+            max-width: 700px;
+            background: #ffffff;
+            padding: 50px 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+            text-align: center;
+        }
+
+        /* Heading */
+        h1 {
+            font-size: 32px;
+            color: #1e293b;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 16px;
+            margin-bottom: 35px;
+        }
+
+        /* Button Container */
+        .dashboard-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Dashboard Links */
+        .dashboard-links a {
+            flex: 1;
+            min-width: 200px;
+            text-decoration: none;
+            padding: 17px 20px;
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            background: #2563eb;
+            border: 2px solid #2563eb;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Supervisor Button */
+        .dashboard-links a:first-child {
+            background: #2563eb;
+            border-color: #2563eb;
+        }
+
+        .dashboard-links a:first-child:hover {
+            background: #1d4ed8;
+            border-color: #1d4ed8;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        /* Worker Button */
+        .dashboard-links a:last-child {
+            background: #059669;
+            border-color: #059669;
+        }
+
+        .dashboard-links a:last-child:hover {
+            background: #047857;
+            border-color: #047857;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(5, 150, 105, 0.3);
+        }
+
+        /* Keyboard Accessibility */
+        .dashboard-links a:focus-visible {
+            outline: 3px solid #f59e0b;
+            outline-offset: 4px;
+        }
+
+        /* Tablet and Mobile */
+        @media (max-width: 600px) {
+            .dashboard {
+                padding: 35px 22px;
+                border-radius: 15px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .subtitle {
+                font-size: 14px;
+                margin-bottom: 25px;
+            }
+
+            .dashboard-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .dashboard-links a {
+                width: 100%;
+                min-width: 0;
+                padding: 16px;
+                font-size: 14px;
+            }
+        }
+
+        /* Small Mobile Screens */
+        @media (max-width: 360px) {
+            .dashboard {
+                padding: 28px 16px;
+            }
+
+            h1 {
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard">
+        <h1>Admin Dashboard</h1>
+        <p class="subtitle">
+            Manage your team by creating supervisors and workers.
+        </p>
+
+        <div class="dashboard-links">
+            <a href="{% url 'authenti:create-superwiser' %}">
+                CREATE SUPERVISOR
+            </a>
+
+            <a href="{% url 'authenti:create-worker' %}">
+                CREATE WORKER
+            </a>
+            <a href="{% url 'payments:select-superwiser' %}">Pay workers</a>
+        </div>
+    </div>
+</body>
+</html>

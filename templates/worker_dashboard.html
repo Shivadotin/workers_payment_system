@@ -1,0 +1,188 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Dashboard</title>
+
+    <link rel="stylesheet" href="{% static 'worker_dashboard.css' %}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Worker Dashboard</h1>
+    <h2>Welcome {{ request.user.username }}</h2>
+
+    <hr>
+
+    <h2>My Attendance</h2>
+
+    <div class="stats">
+        <div class="stat-card">
+            <p>Total Working Days</p>
+            <strong>{{ total_days }}</strong>
+        </div>
+
+        <div class="stat-card">
+            <p>Total Present</p>
+            <strong>{{ present_days }}</strong>
+        </div>
+
+        <div class="stat-card">
+            <p>Total Absent</p>
+            <strong>{{ absent_days }}</strong>
+        </div>
+
+        <div class="stat-card">
+            <p>Daily Wage</p>
+            <strong>₹{{ daily_wage }}</strong>
+        </div>
+
+        <div class="stat-card">
+            <p>Total Salary</p>
+            <strong>₹{{ total_salary }}</strong>
+        </div>
+
+    </div>
+    <h2>My Payment History</h2>
+    <p>View your weekly wage records and payment status.</p>
+    <div class="stats">
+<div class="stat-card">
+    <p>Total Actually Paid</p>
+    <strong>₹{{ total_paid|floatformat:2 }}</strong>
+</div>
+
+<div class="stat-card">
+    <p>Pending Payments</p>
+    <strong>₹{{ total_pending|floatformat:2 }}</strong>
+</div>
+
+<div class="stat-card">
+    <p>Failed Payments</p>
+    <strong>₹{{ total_failed|floatformat:2 }}</strong>
+</div>
+
+    </div>
+
+    {% comment %} <h2>Attendance History</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for record in attendance %}
+            <tr>
+                <td>{{ record.date }}</td>
+                <td>
+                    {% if record.status == "PRESENT" %}
+                        Present
+                    {% else %}
+                         Absent
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2">No attendance records found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table> {% endcomment %}
+
+    <h2>My Earnings</h2>
+
+    <div class="earnings">
+        <p>
+            <strong>This Week Attendance:</strong>
+            <span>{{ weekly_present }} days</span>
+        </p>
+
+        <p>
+            <strong>This Week Earnings:</strong>
+            <span>₹{{ weekly_earnings }}</span>
+        </p>
+
+        <p>
+            <strong>Total Days Worked:</strong>
+            <span>{{ present_days }}</span>
+        </p>
+
+        <p>
+            <strong>Total Lifetime Earnings:</strong>
+            <span>₹{{ total_lifetime_earnings }}</span>
+        </p>
+
+        {% if not has_bank_details %}
+  <p><b>Add your bank details to receive your salary.</b></p>
+{% endif %}
+<a href="{% url 'payments:my-bank-details' %}">
+  {% if has_bank_details %}Update bank details{% else %}Add bank details{% endif %}
+</a>
+
+<h2>My payments</h2>
+{% if payments %}
+<table border="1" cellpadding="6">
+  <tr>
+    <th>Week</th><th>Days worked</th><th>Amount</th><th>Status</th><th>Reference</th>
+  </tr>
+  {% for p in payments %}
+  <tr>
+    <td>{{ p.batch.period_start }} to {{ p.batch.period_end }}</td>
+    <td>{{ p.days_present }}</td>
+    <td>₹{{ p.amount }}</td>
+    <td>
+      {% if p.status == "SUCCESS" %}Paid
+      {% elif p.status == "FAILED" %}Failed, check your bank details
+      {% else %}Pending{% endif %}
+    </td>
+    <td>{% if p.status == "SUCCESS" %}{{ p.transfer_id }}{% endif %}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>No payments yet.</p>
+{% endif %}
+    </div>
+
+    <h2>Attendance History</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for record in attendance %}
+            <tr>
+                <td>{{ record.date }}</td>
+                <td>
+                    {% if record.status == "PRESENT" %}
+                        Present
+                    {% else %}
+                         Absent
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2">No attendance records found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

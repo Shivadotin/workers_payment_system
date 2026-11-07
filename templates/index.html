@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home page</title>
+</head>
+<body>
+        {% if messages %}
+            <div class="message-box">
+                {% for message in messages %}
+                    <p class="{{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+    <h1>welcome to home</h1>
+    <p class=""> mr.{{ user.username }}</p>
+
+    <button type = "submit"><a href="{% url 'authenti:logout' %}" class="">logout </a></button>
+</body>
+</html>

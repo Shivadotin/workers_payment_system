@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Attendance History</title>
+</head>
+
+<body>
+
+<h1>Attendance History</h1>
+
+{% for day in daily_data %}
+
+    <h2>Attendance: {{ day.date }}</h2>
+
+    <table border="1">
+
+        <tr>
+            <th>Worker</th>
+            <th>Status</th>
+        </tr>
+
+        {% for record in day.records %}
+
+            <tr>
+
+                <td>
+                    {{ record.worker.username }}
+                </td>
+
+                <td>
+                    {% if record.status == "PRESENT" %}
+                        ✓ Present
+                    {% else %}
+                        ✗ Absent
+                    {% endif %}
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+    </table>
+
+    <p>
+        <strong>Total Absent: {{ day.absent }}</strong>
+    </p>
+
+    <hr>
+
+{% empty %}
+
+    <p>No attendance records found.</p>
+
+{% endfor %}
+
+</body>
+
+</html>

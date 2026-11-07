@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            background: #ffffff;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1e3a5f;
+            font-size: 30px;
+            margin-bottom: 28px;
+            text-transform: capitalize;
+        }
+
+        .message-box {
+            margin-bottom: 20px;
+        }
+
+        .message-box p {
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 8px;
+            overflow-wrap: anywhere;
+        }
+
+        .message-box .success {
+            color: #166534;
+            background: #dcfce7;
+            border: 1px solid #86efac;
+        }
+
+        .message-box .error {
+            color: #991b1b;
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+        }
+
+        .message-box .warning {
+            color: #92400e;
+            background: #fef3c7;
+            border: 1px solid #fcd34d;
+        }
+
+        .message-box .info {
+            color: #1e40af;
+            background: #dbeafe;
+            border: 1px solid #93c5fd;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 15px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            font-size: 16px;
+            font-family: inherit;
+            color: #1e293b;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 13px;
+            margin-top: 5px;
+            background: #2563eb;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .login-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .login-links {
+            text-align: center;
+            margin-top: 22px;
+        }
+
+        .login-links p {
+            color: #64748b;
+            font-size: 14px;
+            margin-top: 15px;
+            line-height: 1.5;
+        }
+
+        .login-links a {
+            color: #2563eb;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .login-links a:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        /* Tablet screens */
+        @media (max-width: 768px) {
+            .login-container {
+                max-width: 400px;
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+        }
+
+        /* Mobile screens */
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+
+            .login-container {
+                padding: 25px 20px;
+                border-radius: 12px;
+            }
+
+            h1 {
+                font-size: 25px;
+                margin-bottom: 23px;
+            }
+
+            input {
+                padding: 12px;
+                font-size: 16px;
+            }
+
+            .login-btn {
+                padding: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="login-container">
+        <h1>login page</h1>
+    {% if messages %}
+            <div class="message-box">
+                {% for message in messages %}
+                    <p class="{{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+    {% endif %}
+
+
+    <form method="POST" class="">
+        {% csrf_token %}
+        <div class="form-group">
+        <label for="">username</label>
+        <input type="text" placeholder = "Enter your user name" required name = "username">
+    </br>
+    </div>
+
+
+    <div class="form-group">
+        <label for="">password</label>
+        <input type="password" placeholder = "Enter your password" required name = "password">
+    </br>
+
+</div>
+
+        <button type = "submit" class="login-btn">LOGIN</button>
+
+    <div class="login-links">
+
+    <p >Not a Member? <a href="{% url 'authenti:register' %}" class="">signup</a></p>
+    <p>Forgot Password?<a href="{% url 'authenti:forgot-password' %}" class="">click here</a></p>
+    </div>
+
+    </form>
+    </div>
+</body>
+</html>

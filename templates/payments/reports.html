@@ -1,0 +1,407 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Payment Reports | Daily Wage System</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            color: #1e293b;
+        }
+
+        .navbar {
+            background: #142b4a;
+            color: white;
+            padding: 18px 5%;
+        }
+
+        .navbar h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .container {
+            max-width: 1250px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .heading {
+            margin-bottom: 24px;
+        }
+
+        .heading h1 {
+            margin: 0 0 8px;
+            font-size: 28px;
+        }
+
+        .heading p {
+            margin: 0;
+            color: #64748b;
+        }
+
+        .card, .panel {
+            background: white;
+            border: 1px solid #e1e8f0;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+        }
+
+        .filters {
+            padding: 20px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: end;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filters label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        input[type="date"] {
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font: inherit;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            padding: 20px;
+        }
+
+        .card p {
+            color: #64748b;
+            font-size: 14px;
+            margin: 0 0 12px;
+        }
+
+        .card h2 {
+            font-size: 24px;
+            margin: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .panel {
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        .panel-heading {
+            padding: 20px;
+            border-bottom: 1px solid #e1e8f0;
+        }
+
+        .panel-heading h2 {
+            font-size: 19px;
+            margin: 0 0 6px;
+        }
+
+        .panel-heading p {
+            margin: 0;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 720px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #edf1f6;
+            font-size: 14px;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #475569;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        tbody tr:hover {
+            background: #f8fbff;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .success {
+            color: #065f46;
+            background: #d1fae5;
+        }
+
+        .pending {
+            color: #8a5700;
+            background: #fff0c2;
+        }
+
+        .failed {
+            color: #991b1b;
+            background: #fee2e2;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            border: 0;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #e8eef6;
+            color: #1e293b;
+        }
+
+        .empty {
+            padding: 25px;
+            text-align: center;
+            color: #64748b;
+        }
+
+        .messages {
+            margin-bottom: 20px;
+        }
+
+        .message {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: #e0f2fe;
+            color: #075985;
+            border-radius: 7px;
+        }
+
+        .amount {
+            white-space: nowrap;
+            font-weight: bold;
+        }
+
+        @media (max-width: 850px) {
+            .cards {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 500px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 0 12px;
+            }
+
+            .heading h1 {
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <h2>Daily Wage Payment System</h2>
+</nav>
+
+<main class="container">
+
+    <div class="heading">
+        <h1>Payment Reports</h1>
+        <p>Review worker payments, pending wages, and failed transactions.</p>
+    </div>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="get" class="card filters">
+        <div>
+            <label for="start_date">From date</label>
+            <input type="date" id="start_date" name="start_date"
+                   value="{{ start_date|date:'Y-m-d' }}" required>
+        </div>
+
+        <div>
+            <label for="end_date">To date</label>
+            <input type="date" id="end_date" name="end_date"
+                   value="{{ end_date|date:'Y-m-d' }}" required>
+        </div>
+
+        <button type="submit" class="btn">Generate Report</button>
+    </form>
+
+    <section class="cards">
+
+        <div class="card">
+            <p>Total Wages Paid</p>
+            <h2>₹{{ total_paid|floatformat:2 }}</h2>
+        </div>
+
+        <div class="card">
+            <p>Pending Payments</p>
+            <h2>₹{{ total_pending|floatformat:2 }}</h2>
+        </div>
+
+        <div class="card">
+            <p>Failed Payments</p>
+            <h2>₹{{ total_failed|floatformat:2 }}</h2>
+        </div>
+
+        <div class="card">
+            <p>Workers in Records</p>
+            <h2>{{ worker_count }}</h2>
+        </div>
+
+    </section>
+
+    <section class="panel">
+
+        <div class="panel-heading">
+            <h2>Superwiser Payment Summary</h2>
+            <p>Payment totals for each team's worker records in the selected period.</p>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Superwiser</th>
+                        <th>Workers</th>
+                        <th>Paid</th>
+                        <th>Pending</th>
+                        <th>Failed</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for row in superwiser_reports %}
+                    <tr>
+                        <td><strong>{{ row.superwiser.username }}</strong></td>
+                        <td>{{ row.worker_count }}</td>
+                        <td class="amount">₹{{ row.paid|floatformat:2 }}</td>
+                        <td class="amount">₹{{ row.pending|floatformat:2 }}</td>
+                        <td class="amount">₹{{ row.failed|floatformat:2 }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="empty">
+                            No payout batches found for this period.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+
+    <section class="panel">
+
+        <div class="panel-heading">
+            <h2>Individual Worker Payment History</h2>
+            <p>Detailed wage and payment records for the selected period.</p>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Worker</th>
+                        <th>Superwiser</th>
+                        <th>Week Start</th>
+                        <th>Present Days</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Transfer ID</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for r in records %}
+                    <tr>
+                        <td>{{ r.worker.username }}</td>
+                        <td>{{ r.batch.superwiser.username }}</td>
+                        <td>{{ r.batch.period_start|date:"d M Y" }}</td>
+                        <td>{{ r.days_present }}</td>
+                        <td class="amount">₹{{ r.amount|floatformat:2 }}</td>
+
+                        <td>
+                            {% if r.status == "SUCCESS" %}
+                                <span class="badge success">SUCCESS</span>
+                            {% elif r.status == "FAILED" %}
+                                <span class="badge failed">FAILED</span>
+                            {% else %}
+                                <span class="badge pending">{{ r.status }}</span>
+                            {% endif %}
+                        </td>
+
+                        <td>{{ r.transfer_id|default:"—" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="empty">
+                            No worker payment records found for this period.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+
+    <a href="{% url 'payments:select-superwiser' %}"
+       class="btn btn-secondary">
+        ← Back to Weekly Payments
+    </a>
+
+</main>
+
+</body>
+</html>

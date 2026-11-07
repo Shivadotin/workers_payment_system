@@ -1,0 +1,54 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>worker profile</title>
+</head>
+<body>
+    <p class="">worker id : {{ worker.worker_id }}</p>
+    <p class="">username : {{ worker.username }}</p>
+    <p class="">FIRST NAME : {{ worker.first_name }}</p>
+    <p class="">LAST NAME : {{ worker.last_name }}</p>
+    <p class="">EAMIL : {{ worker.email }}</p>
+    <p class="">PHONE NUMBER : {{ worker.phone_number }}</p>
+    <a href="{% url 'authenti:superwiser-dashboard' %}" class="">back to dashboard</a>
+    <a href="{% url 'authenti:edit-worker' worker.id %}" class="">edit</a>
+</body>
+</html> {% endcomment %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Profile</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'worker_profile.css' %}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Worker Profile</h1>
+
+        <p>Worker ID: {{ worker.worker_id }}</p>
+        <p>Username: {{ worker.username }}</p>
+        <p>First Name: {{ worker.first_name }}</p>
+        <p>Last Name: {{ worker.last_name }}</p>
+        <p>Email: {{ worker.email }}</p>
+        <p>Phone Number: {{ worker.phone_number }}</p>
+
+        <a href="{% url 'authenti:superwiser-dashboard' %}">
+            Back to Dashboard
+        </a>
+
+        <a href="{% url 'authenti:edit-worker' worker.id %}">
+            Edit Profile
+        </a>
+    </div>
+
+</body>
+</html>
+

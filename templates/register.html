@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>register form</title>
+</head>
+<body>
+    <h1>Register form</h1>
+        {% if messages %}
+            <div class="message-box">
+                {% for message in messages %}
+                    <p class="{{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+    <form method="POST" class="">
+        {% csrf_token %}
+
+        <label for="">Username</label>
+        <input type="text" placeholder = "Enter username" name = "username" required>
+    </br>
+
+         <label for="">First name</label>
+        <input type="text" placeholder = "Enter your first name" name = "First_name" required>
+    </br>
+
+         <label for="">Last name</label>
+        <input type="text" placeholder = "Enter your last name" name = "Last_name" required>
+    </br>
+
+    <label for="">Email</label>
+        <input type="email" placeholder = "Enter your email" name = "Email" required>
+    </br>
+
+    <label for="">Password</label>
+        <input type="password" placeholder = "Set a password" name = "password" required>
+    </br>
+
+    <label for="">Confirm password</label>
+        <input type="password" placeholder = "confirm password " name = "password1" required>
+    </br>
+    <button type = "Submit">Submit</button>
+    </form>
+    
+</body>
+</html>

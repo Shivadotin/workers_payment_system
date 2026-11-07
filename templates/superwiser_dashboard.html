@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>superwiser dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            padding: 30px 20px;
+            color: #1e293b;
+        }
+
+        .dashboard-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Dashboard heading */
+        .dashboard-header {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: #1e3a5f;
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .welcome-text {
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        .welcome-text span {
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        /* Dashboard action buttons */
+        .dashboard-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .action-btn {
+            display: inline-block;
+            padding: 13px 20px;
+            background: #2563eb;
+            color: #ffffff;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .action-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .history-btn {
+            background: #475569;
+        }
+
+        .history-btn:hover {
+            background: #334155;
+        }
+
+        /* Worker table card */
+        .table-card {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .table-heading {
+            color: #1e3a5f;
+            font-size: 23px;
+            margin-bottom: 20px;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        thead {
+            background: #eff6ff;
+        }
+
+        th {
+            padding: 16px 14px;
+            text-align: left;
+            color: #1e3a5f;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px 14px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Table action links */
+        .table-btn {
+            display: inline-block;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: background 0.3s;
+        }
+
+        .view-btn {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .view-btn:hover {
+            background: #bfdbfe;
+        }
+
+        .edit-btn {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .edit-btn:hover {
+            background: #fde68a;
+        }
+
+        .delete-btn {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .delete-btn:hover {
+            background: #fecaca;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 25px;
+            color: #64748b;
+        }
+
+        /* Tablet screens */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .dashboard-header {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .dashboard-actions {
+                gap: 10px;
+            }
+
+            .action-btn {
+                flex: 1 1 200px;
+            }
+
+            .table-card {
+                padding: 20px;
+            }
+
+            .table-heading {
+                font-size: 21px;
+            }
+        }
+
+        /* Mobile screens */
+        @media (max-width: 480px) {
+            body {
+                padding: 15px 10px;
+            }
+
+            .dashboard-header {
+                padding: 20px;
+                border-radius: 12px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .welcome-text {
+                font-size: 14px;
+                line-height: 1.6;
+            }
+
+            .dashboard-actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+                flex: auto;
+                padding: 13px;
+            }
+
+            .table-card {
+                padding: 15px 10px;
+                border-radius: 12px;
+            }
+
+            .table-heading {
+                font-size: 19px;
+                padding-left: 5px;
+            }
+
+            th,
+            td {
+                padding: 12px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+    <h1>superwiser dashboard</h1>
+    <p class="welcom-text"> welcome ,  <span> {{ request.user.first_name }}</span> ! </p>
+        </div>
+
+        <div class="dashboard-actions">
+    <a href="{% url 'authenti:create-worker' %}" class="action-btn">create worker</a>
+    <a href="{% url 'attendance:mark-attendance' %}" class="action-btn">TAKE ATTENDANCE</a>
+    <a href="{% url 'attendance:attendance-history' %}" class="action-btn">Attendance History</a>
+        </div>
+
+    <div class="table-card">
+
+    <h2 class="table-heading">Worker Management</h2>
+    <div class="table-wrapper">
+    <table>
+        <tr class="">
+            <th>worker id</th>
+            <th>username</th>
+            <th>view</th>
+            <th>update</th>
+            <th>delete</th>
+        </tr>
+        {% for worker in workers  %}
+        <tr class="">
+            <td>{{ worker.worker_id }}</td>
+            <td>{{ worker.username }}</td>
+            <td><a href="{% url 'authenti:worker-profile' worker.id %}" class="table-btn view-btn">VIEW </a></td>
+            <td><a href="{% url 'authenti:edit-worker' worker.id %}" class="table-btn edit-btn">Update</a></td>
+            <td><a href="{% url 'authenti:delete-worker' worker.id %}" class="table-btn delete-btn">Delete</a></td>
+        </tr>
+        {% endfor %}
+ 
+    </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

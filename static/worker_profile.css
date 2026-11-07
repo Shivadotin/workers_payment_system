@@ -1,0 +1,121 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Page background */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #d9e6f9;
+    padding: 25px;
+}
+
+/* Profile card */
+.container {
+    width: 100%;
+    max-width: 600px;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 18px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.10);
+}
+
+/* Profile heading (optional) */
+h1 {
+    text-align: center;
+    color: #173b68;
+    font-size: 30px;
+    margin-bottom: 30px;
+}
+
+/* Worker details */
+.container p {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    background: #f5f8fd;
+    border: 1px solid #e1eaf7;
+    border-radius: 9px;
+    color: #173b68;
+    font-size: 16px;
+    overflow-wrap: anywhere;
+}
+
+/* Labels and values */
+.container p {
+    font-weight: 500;
+}
+
+/* Links */
+.container a {
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    padding: 13px 18px;
+    margin-top: 20px;
+    margin-right: 8px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: background 0.3s, transform 0.2s;
+}
+
+/* Back to dashboard */
+.container a:first-of-type {
+    background: #eaf0fa;
+    color: #173b68;
+    border: 1px solid #cbd8e8;
+}
+
+.container a:first-of-type:hover {
+    background: #dce7f8;
+    transform: translateY(-2px);
+}
+
+/* Edit button */
+.container a:last-of-type {
+    background: #2864ed;
+    color: #ffffff;
+}
+
+.container a:last-of-type:hover {
+    background: #174fc9;
+    transform: translateY(-2px);
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+    body {
+        padding: 15px;
+    }
+
+    .container {
+        padding: 25px 18px;
+    }
+
+    h1 {
+        font-size: 25px;
+    }
+
+    .container p {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        padding: 13px;
+        font-size: 14px;
+    }
+
+    .container a {
+        display: block;
+        margin: 12px 0 0;
+        width: 100%;
+    }
+}
